@@ -4,16 +4,96 @@
 /**
  * Constructs a new graph editor
  */
+window.traverse = function(graph) {
+	var visitedCells = new Set(); // Set to keep track of visited cells
+	var connectedCells = new Set(); // Set to keep track of connected cells and edges
+	debugger;
+	// function traverse_helper(cell) {
+	// 	visitedCells.add(cell);
+	// 	connectedCells.add(cell);
+	// 	debugger;
+		
+		
+	// 	// var edges = graph.getEdges(cell);
+	// 	// for (var i = 0; i < edges.length; i++) {
+	// 	// 	var edge = edges[i];
+	// 	// 	var source = edge.getSource();
+	// 	// 	var target = edge.getTarget();
+	// 	// 	if (source === cell || target === cell) {
+	// 	// 		connectedCells.add(edge);
+	// 	// 		var otherCell = source === cell ? target : source;
+	// 	// 		if (!visitedCells.has(otherCell)) {
+	// 	// 			traverse_helper(otherCell);
+	// 	// 		}
+	// 	// 	}
+	// 	// }
+
+	// 	// var children = graph.getModel().getChildCells(cell);
+	// 	// for (var i = 0; i < children.length; i++) {
+	// 	// 	var child = children[i];
+	// 	// 	console.log(child.vertex);
+	// 	// 	if(child.vertex == 1) {
+	// 	// 		console.log(child.value);
+	// 	// 	}
+			
+	// 	// 	if (!visitedCells.has(child)) {
+	// 	// 		traverse_helper(child);
+	// 	// 	}
+	// 	// }
+	// }
+
+	//traverse();
+	var cell = graph.model.cells[1];
+	// //id one root (not actually root node)
+	var graphCells = graph.getModel().getChildCells(cell);
+	function determineLeafNodes(graph) {
+		var roots = [];
+		var vertices = graph.getChildVertices(graph.getDefaultParent());
+
+		// For each vertex, check if it has any incoming edges
+		for (var i = 0; i < vertices.length; i++) {
+			var incomingEdges = graph.getOutgoingEdges(vertices[i]);
+
+			// If a vertex has no incoming edges, it is a leaf node
+			if (incomingEdges.length == 0) {
+				roots.push(vertices[i]);
+			}
+		}
+		return roots;
+	}
+	
+  
+	
+	
+	if(graphCells.length > 0) {
+		//traverse_helper(graphCells[0]);
+		return determineLeafNodes(graph);
+	} else {
+		console.log("Please enter components to the graph");
+	}
+	
+	
+	
+
+}
+window.analyze = function() {
+	debugger;
+	var leaf_nodes = traverse(global_graph);
+	for(var i = 0; i < leaf_nodes.length; i++) {
+		console.log(leaf_nodes[i].value);
+	};
+}
+window.global_graph;
 EditorUi = function(editor, container, lightbox)
 {
 	mxEventSource.call(this);
-	
+	debugger;
 	this.destroyFunctions = [];
 	this.editor = editor || new Editor();
 	this.container = container || document.body;
 	
 	var graph = this.editor.graph;
-	graph.lightbox = lightbox;
+	global_graph = graph;
 
 	// Overrides graph bounds to include background images
 	var graphGetGraphBounds = graph.getGraphBounds;
