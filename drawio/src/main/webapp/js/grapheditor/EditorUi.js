@@ -7,7 +7,7 @@
 window.traverse = function(graph) {
 	var visitedCells = new Set(); // Set to keep track of visited cells
 	var connectedCells = new Set(); // Set to keep track of connected cells and edges
-	debugger;
+	
 	// function traverse_helper(cell) {
 	// 	visitedCells.add(cell);
 	// 	connectedCells.add(cell);
@@ -44,18 +44,21 @@ window.traverse = function(graph) {
 
 	//traverse();
 	var cell = graph.model.cells[1];
-	// //id one root (not actually root node)
+	//id one root (not actually root node)
 	var graphCells = graph.getModel().getChildCells(cell);
 	function determineLeafNodes(graph) {
 		var roots = [];
 		var vertices = graph.getChildVertices(graph.getDefaultParent());
 
-		// For each vertex, check if it has any incoming edges
+		// For each vertex, check if it has any outgoing edges
 		for (var i = 0; i < vertices.length; i++) {
 			var incomingEdges = graph.getOutgoingEdges(vertices[i]);
 
-			// If a vertex has no incoming edges, it is a leaf node
-			if (incomingEdges.length == 0) {
+			// If a vertex has no outgoing edges, it is a leaf node
+			var edges = graph.getEdges(vertices[i])
+
+			if (incomingEdges.length == 0 && edges.length < 2) {
+				debugger;
 				roots.push(vertices[i]);
 			}
 		}
@@ -79,9 +82,30 @@ window.traverse = function(graph) {
 window.analyze = function() {
 	debugger;
 	var leaf_nodes = traverse(global_graph);
-	for(var i = 0; i < leaf_nodes.length; i++) {
-		console.log(leaf_nodes[i].value);
-	};
+	graph = global_graph;
+	var determine_spof = function(nodes) {
+		var spofSet = new Set();
+		 
+		for(var i = 0; i < nodes.length; i++) {
+			debugger;
+			var node = nodes[0];
+			var parent = node.edges[0].source;
+			if(!spofSet.has(parent)) {
+				spofSet.add(parent);
+			}
+		}
+		return Array.from(spofSet);
+	}
+	//console.log(determine_spof(leaf_nodes));
+	var spof = determine_spof(leaf_nodes);
+	graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, '#FFFF00', spof);
+	graph.container.addEventListener('click', function handler() {
+		// revert the fill color of the cells back to their original color
+		graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, null, spof);
+	  
+		// remove the click event listener after it has been called once
+		graph.container.removeEventListener('click', handler);
+	});
 }
 window.global_graph;
 EditorUi = function(editor, container, lightbox)
