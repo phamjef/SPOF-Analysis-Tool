@@ -6422,3 +6422,68 @@ EditorUi.prototype.destroy = function()
 		}
 	}
 };
+
+EditorUi.prototype.analyze = function(graph) {
+	var traverse = function (graph) {
+
+		var cell = graph.model.cells[1];
+
+		var graphCells = graph.getModel().getChildCells(cell);
+
+		function determineLeafNodes(graph) {
+			var leaf = [];
+			var vertices = graph.getChildVertices(graph.getDefaultParent());
+
+			// For each vertex, check if it has any outgoing edges
+			for (var i = 0; i < vertices.length; i++) {
+				var outGoingEdges = graph.getOutgoingEdges(vertices[i]);
+
+				// If a vertex has no outgoing edges, it is a leaf node
+				var edges = graph.getEdges(vertices[i])
+				
+				if (outGoingEdges.length == 0 && edges.length < 2) {
+					leaf.push(vertices[i]);
+				}
+			}
+			return leaf;
+		}
+		if (graphCells.length > 0) {
+			return determineLeafNodes(graph);
+		} else {
+			console.log("Please enter components to the graph");
+		}
+	};
+
+	var leaf_nodes = traverse(graph);
+	
+	var determine_spof = function(nodes) {
+		var spofSet = new Set();
+		 
+		for (var i = 0; i < nodes.length; i++) {
+			var node = nodes[i];
+			
+			if (node.edges != null && node.edges.length > 0) {
+				var parent = node.edges[0]?.source;
+				if (parent && !spofSet.has(parent)) {
+					spofSet.add(parent);
+				}
+			}
+
+
+		}
+		return Array.from(spofSet);
+	}
+	
+	var spof = determine_spof(leaf_nodes);
+	
+	//change color of all spof nodes
+	graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, '#FFFF00', spof);
+
+	graph.container.addEventListener('click', function handler() {
+		// revert the fill color of the cells back to their original color
+		graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, null, spof);
+	  
+		// remove the click event listener after it has been called once
+		graph.container.removeEventListener('click', handler);
+	});
+}
