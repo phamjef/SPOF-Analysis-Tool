@@ -1,0 +1,36 @@
+{
+  "name": "test-config",
+  "version": "1.0.0",
+  "description": "testing config for SPOF tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "test-spof"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phamjef/SPOF-Analysis-Tool.git"
+  },
+  "keywords": [
+    "drawio",
+    "SPOF",
+    "spof",
+    "\"dependency",
+    "analysis\"",
+    "uml"
+  ],
+  "author": "Group 6",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phamjef/SPOF-Analysis-Tool/issues"
+  },
+  "homepage": "https://github.com/phamjef/SPOF-Analysis-Tool#readme",
+
+  "devDependencies": {
+    "selenium-webdriver": "4.8.2",
+    "selenium-appium": "1.0.2",
+    "winappdriver": "0.0.7",
+    "playwright": "1.32.3",
+    "@playwright/test": "1.32.3"
+  }
+
+}
