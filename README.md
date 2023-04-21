@@ -43,6 +43,21 @@ Local Storage and Session Storage is stored in the AppData folder:
 - macOS: `~/Library/Application Support/draw.io`
 - Windows: `C:\Users\<USER-NAME>\AppData\Roaming\draw.io\`
 
+Single Point of Failure Functionality
+-------------------------------------
+
+For this specific build of drawio, you will need to have Apache Ant and Node.js installed
+beforehand in order to build the project. Continuing from the installation and running from
+the developing section, you will need to also use Apache Ant to update and rebuild the application
+due to the min files. Please note that the build file for running Ant is located in SPOF-Analysis-Tool\drawio\etc\build
+directory, so please make sure to switch to the correct directory
+
+To update and rebuild with Ant:
+1. `cd drawio/etc/build`Change to the "build" directory in drawio
+2. `ant` (command to run ant in the build directory) 
+3. `cd ..` (Return to the root directory of the project SPOF-Analysis-Tool)
+4. `npm start` (in the root directory, runs the app with updates applied)
+
 Open-source, not open-contribution
 ----------------------------------
 
@@ -58,3 +73,4 @@ We are grateful for community involvement, bug reports, & feature requests. We d
 not wish to come off as anything but welcoming, however, we've
 made the decision to keep this project closed to contributions for 
 the long term viability of the project.
+
