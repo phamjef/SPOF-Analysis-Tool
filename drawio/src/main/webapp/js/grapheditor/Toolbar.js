@@ -197,6 +197,7 @@ Toolbar.prototype.appendDropDownImageHtml = function(elt)
 	img.setAttribute('src', Toolbar.prototype.dropDownImage);
 	elt.appendChild(img);
 
+	
 	img.style.position = 'absolute';
 	img.style.right = '4px';
 	img.style.top = (!EditorUi.compactUi ? 8 : 6) + 'px';
