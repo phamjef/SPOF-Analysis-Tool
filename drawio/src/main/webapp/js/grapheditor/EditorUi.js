@@ -6431,22 +6431,21 @@ EditorUi.prototype.analyze = function(graph) {
 		var graphCells = graph.getModel().getChildCells(cell);
 
 		function determineLeafNodes(graph) {
-			var roots = [];
+			var leaf = [];
 			var vertices = graph.getChildVertices(graph.getDefaultParent());
 
 			// For each vertex, check if it has any outgoing edges
 			for (var i = 0; i < vertices.length; i++) {
-				var incomingEdges = graph.getOutgoingEdges(vertices[i]);
+				var outGoingEdges = graph.getOutgoingEdges(vertices[i]);
 
 				// If a vertex has no outgoing edges, it is a leaf node
 				var edges = graph.getEdges(vertices[i])
-
-				if (incomingEdges.length == 0 && edges.length < 2) {
-					debugger;
-					roots.push(vertices[i]);
+				
+				if (outGoingEdges.length == 0 && edges.length < 2) {
+					leaf.push(vertices[i]);
 				}
 			}
-			return roots;
+			return leaf;
 		}
 		if (graphCells.length > 0) {
 			return determineLeafNodes(graph);
@@ -6456,22 +6455,27 @@ EditorUi.prototype.analyze = function(graph) {
 	};
 
 	var leaf_nodes = traverse(graph);
+	
 	var determine_spof = function(nodes) {
 		var spofSet = new Set();
 		 
-		for(var i = 0; i < nodes.length; i++) {
-			debugger;
-			var node = nodes[0];
-			var parent = node.edges[0].source;
-			if(!spofSet.has(parent)) {
-				spofSet.add(parent);
+		for (var i = 0; i < nodes.length; i++) {
+			var node = nodes[i];
+			
+			if (node.edges != null && node.edges.length > 0) {
+				var parent = node.edges[0]?.source;
+				if (parent && !spofSet.has(parent)) {
+					spofSet.add(parent);
+				}
 			}
+
+
 		}
 		return Array.from(spofSet);
 	}
 	
 	var spof = determine_spof(leaf_nodes);
-
+	
 	//change color of all spof nodes
 	graph.setCellStyles(mxConstants.STYLE_FILLCOLOR, '#FFFF00', spof);
 
