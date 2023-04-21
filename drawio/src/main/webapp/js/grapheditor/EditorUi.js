@@ -6423,6 +6423,7 @@ EditorUi.prototype.destroy = function()
 	}
 };
 
+/*SPOF analysis method: Work in progress*/
 EditorUi.prototype.analyze = function(graph) {
 	var traverse = function (graph) {
 
