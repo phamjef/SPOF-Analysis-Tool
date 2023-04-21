@@ -174,7 +174,7 @@ Toolbar.prototype.init = function()
 	this.addSeparator();
 	this.addTableDropDown();
 
-
+	
 	// Dropdown menu for spof analysis
 	this.testMenu = this.addMenuFunction('SPOF Analysis', 'Test Menu', true, mxUtils.bind(this, function(menu) {
 		// button that says performs analysis on the graph
