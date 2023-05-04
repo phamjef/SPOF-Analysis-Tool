@@ -6465,6 +6465,12 @@ EditorUi.prototype.analyze = function(graph) {
 			
 			if (node.edges != null && node.edges.length > 0) {
 				var parent = node.edges[0]?.source;
+				var parentName = parent?.value?.toLowerCase();
+				var childName = node.value.toLowerCase();
+				
+				if(childName.includes(parentName) || parentName.includes(childName)) {
+					continue;
+				}
 				if (parent && !spofSet.has(parent)) {
 					spofSet.add(parent);
 				}
